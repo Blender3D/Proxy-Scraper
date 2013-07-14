@@ -82,9 +82,6 @@ class HidemyassSpider(CrawlSpider):
     def parse_page(self, response):
         xpath = HtmlXPathSelector(response)
 
-        with open('/tmp/foo.html', 'wb') as handle:
-            handle.write(response.body)
-
         for row in xpath.select('//table[@id="listtable"]/tr'):
             loader = ProxyItemLoader(item=Proxy(), response=response, selector=row)
 
