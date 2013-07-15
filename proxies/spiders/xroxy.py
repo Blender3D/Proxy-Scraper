@@ -29,13 +29,7 @@ class XroxySpider(CrawlSpider):
 
         for row in xpath.select('//table[@cellpadding="3"]/tr[starts-with(@class, "row")]'):
             loader = ProxyItemLoader(item=Proxy(), response=response, selector=row)
-
-            if row.select('td[5]/a/text()').extract()[0] == 'true':
-                loader.add_value('ssl', True)
-            else:
-                loader.add_value('ssl', False)
-
-            loader.add_xpath('type', 'td[4]/a/text()')
+            
             loader.add_xpath('port', 'td[3]/a/text()')
             loader.add_xpath('address', 'td[2]/a/text()')
 

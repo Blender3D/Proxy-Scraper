@@ -60,13 +60,7 @@ class ProxyhttpSpider(CrawlSpider):
 
         for row in xpath.select('//table[@class="proxytbl"]/tr[position() > 1]'):
             loader = ProxyItemLoader(item=Proxy(), response=response, selector=row)
-
-            if row.select('td[@class="t_https"]/text()').extract():
-                loader.add_value('ssl', False)
-            else:
-                loader.add_value('ssl', True)
             
-            loader.add_xpath('type', 'td[4]/text()')
             loader.add_value('port', self.get_port(row.select('td[@class="t_port"]/script'), variables))
             loader.add_xpath('address', 'td[@class="t_ip"]/text()')
 
