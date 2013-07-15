@@ -10,8 +10,8 @@ class Proxy(Item):
     latency = Field()
 
 class ProxyItemLoader(XPathItemLoader):
+    default_input_processor = MapCompose(unicode.strip)
     default_output_processor = TakeFirst()
 
-    address_in = Identity()
     port_in = MapCompose(int)
     type_in = MapCompose(unicode.lower)
