@@ -66,7 +66,7 @@ class ProxyhttpSpider(CrawlSpider):
             else:
                 loader.add_value('ssl', True)
             
-            loader.add_xpath('type', 'td[@class="t_anonymity"]/text()')
+            loader.add_xpath('type', 'td[4]/text()')
             loader.add_value('port', self.get_port(row.select('td[@class="t_port"]/script'), variables))
             loader.add_xpath('address', 'td[@class="t_ip"]/text()')
 

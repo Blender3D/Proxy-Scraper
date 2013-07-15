@@ -23,14 +23,11 @@ class ProxiesPipeline(object):
 
             if 'ssl' not in item:
                 item['ssl'] = False
-        elif 'socks' in type:
-            if '5' in type:
-                item['type'] = 'socks5'
-            elif '4' in type:
-                item['type'] = 'socks4'
-            else:
-                raise DropItem
-
+        elif '5' in type:
+            item['type'] = 'socks5'
+            item['ssl'] = True
+        elif '4' in type:
+            item['type'] = 'socks4'
             item['ssl'] = True
         else:
             raise DropItem
