@@ -24,6 +24,10 @@ def test_proxy(type, address):
 
 class ProxiesPipeline(object):
     def process_item(self, item, spider):
+        return item
+
+    # Fake method
+    def validate_item(self, item, spider):
         result, latency = test_proxy(item['type'], item['address'])
 
         if result and latency < 0.5:
