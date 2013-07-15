@@ -15,10 +15,9 @@ class Proxy(Item):
     ssl = Field()
 
 class ProxyItemLoader(XPathItemLoader):
-    default_input_processor = MapCompose(unicode.strip)
+    default_input_processor = MapCompose(unicode.strip, unicode.lower)
     default_output_processor = TakeFirst()
 
     ssl_in = Identity()
     ssl_out = TakeVeryFirst()
     port_in = MapCompose(int)
-    type_in = MapCompose(unicode.strip, unicode.lower)

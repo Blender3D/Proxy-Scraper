@@ -16,7 +16,7 @@ class ProxiesPipeline(object):
     ])
 
     def process_item(self, item, spider):
-        type = item['type'].lower()
+        type = item['type']
 
         if type in self.HTTP_PROXIES:
             item['type'] = 'http'
