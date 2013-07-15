@@ -10,5 +10,5 @@ class Proxy(Item):
 class ProxyItemLoader(XPathItemLoader):
     default_output_processor = TakeFirst()
     
-    address_in = MapCompose(unicode.strip)
+    address_in = MapCompose(unicode, unicode.strip)
     port_in = MapCompose(int)

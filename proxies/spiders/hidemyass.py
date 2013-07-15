@@ -85,8 +85,8 @@ class HidemyassSpider(CrawlSpider):
         for row in xpath.select('//table[@id="listtable"]/tr'):
             loader = ProxyItemLoader(item=Proxy(), response=response, selector=row)
 
-            loader.add_xpath('port', 'td[3]/text()')
             loader.add_value('address', self.get_ip(row.select('td[2]/span')))
+            loader.add_xpath('port', 'td[3]/text()')
 
             yield loader.load_item()
 

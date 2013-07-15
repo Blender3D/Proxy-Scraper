@@ -61,7 +61,7 @@ class ProxyhttpSpider(CrawlSpider):
         for row in xpath.select('//table[@class="proxytbl"]/tr[position() > 1]'):
             loader = ProxyItemLoader(item=Proxy(), response=response, selector=row)
             
-            loader.add_value('port', self.get_port(row.select('td[@class="t_port"]/script'), variables))
             loader.add_xpath('address', 'td[@class="t_ip"]/text()')
+            loader.add_value('port', self.get_port(row.select('td[@class="t_port"]/script'), variables))
 
             yield loader.load_item()
