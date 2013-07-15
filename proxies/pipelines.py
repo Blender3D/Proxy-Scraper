@@ -4,35 +4,35 @@ import time
 
 from scrapy.exceptions import DropItem
 
-def test_proxy(type, address):
-    start = time.time()
-
-    try:
-        proxy_handler = urllib2.ProxyHandler({type: address})
-        
-        opener = urllib2.build_opener(proxy_handler)
-        opener.addheaders = [('User-agent', 'Mozilla/5.0 (Windows NT 6.1; Intel Mac OS X 10.6; rv:7.0.1) Gecko/20100101 Firefox/7.0.1')]
-        urllib2.install_opener(opener)
-
-        request = urllib2.Request('http://example.iana.org/')
-        connection = urllib2.urlopen(request, timeout=1.0)
-        connection.close()
-    except:
-        return False, None
-
-    return True, time.time() - start
-
 class ProxiesPipeline(object):
+    HTTP_PROXIES = frozenset([
+        'http',
+        'https',
+        'transparent',
+        'elite',
+        'high',
+        'anonymous',
+        'distorting'
+    ])
+
     def process_item(self, item, spider):
-        return item
+        type = item['type'].lower()
 
-    # Fake method
-    def validate_item(self, item, spider):
-        result, latency = test_proxy(item['type'], item['address'])
+        if type in self.HTTP_PROXIES:
+            item['type'] = 'http'
 
-        if result and latency < 0.5:
-            item['latency'] = latency
+            if 'ssl' not in item:
+                item['ssl'] = False
+        elif 'socks' in type:
+            if '5' in type:
+                item['type'] = 'socks5'
+            elif '4' in type:
+                item['type'] = 'socks4'
+            else:
+                raise DropItem
 
-            return item
+            item['ssl'] = True
         else:
             raise DropItem
+
+        return item

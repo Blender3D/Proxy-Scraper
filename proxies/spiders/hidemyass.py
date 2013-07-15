@@ -14,7 +14,7 @@ from proxies.items import Proxy, ProxyItemLoader
 FORM_DATA = {
     'ac': 'on',
     'p': '',
-    'pr[]': ['0', '1'],
+    'pr[]': ['0', '1', '2'],
     'a[]': ['0', '1', '2', '3', '4'],
     'sp[]': ['1', '2', '3'],
     'ct[]': ['1', '2', '3'],

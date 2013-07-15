@@ -16,7 +16,8 @@ class ProxyhttpSpider(CrawlSpider):
     rules = (
         Rule(
             SgmlLinkExtractor(
-                restrict_xpaths='//div[@id="pages"]'
+                restrict_xpaths='//div[@id="pages"]',
+                deny='/privatearea'
             ),
             callback='parse_page',
             follow=True
@@ -61,10 +62,11 @@ class ProxyhttpSpider(CrawlSpider):
             loader = ProxyItemLoader(item=Proxy(), response=response, selector=row)
 
             if row.select('td[@class="t_https"]/text()').extract():
-                loader.add_value('type', u'http')
+                loader.add_value('ssl', False)
             else:
-                loader.add_value('type', u'https')
-
+                loader.add_value('ssl', True)
+            
+            loader.add_xpath('type', 'td[@class="t_anonymity"]/text()')
             loader.add_value('port', self.get_port(row.select('td[@class="t_port"]/script'), variables))
             loader.add_xpath('address', 'td[@class="t_ip"]/text()')
 
