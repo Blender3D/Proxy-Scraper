@@ -1,3 +1,0 @@
-scrapy
-beautifulsoup4
-cssutils

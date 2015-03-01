@@ -11,7 +11,7 @@ from proxies.items import Proxy, ProxyItemLoader
 class XroxySpider(CrawlSpider):
     name = 'xroxy'
     allowed_domains = ['www.xroxy.com']
-    start_urls = ['http://www.xroxy.com/proxylist.php?port=&type=Not_codeen&ssl=&country=&latency=&reliability=&sort=reliability&desc=true&pnum=0']
+    start_urls = ['http://www.xroxy.com/proxylist.php?port=&type=&ssl=&country=&latency=&reliability=&sort=reliability&desc=true&pnum=0']
 
     rules = (
         Rule(

@@ -25,11 +25,10 @@ class CoolProxySpider(CrawlSpider):
 
     def parse_page(self, response):
         xpath = HtmlXPathSelector(response)
-
         for row in xpath.select('//table/tr[count(td) > 1]')[1:-1]:
             loader = ProxyItemLoader(item=Proxy(), response=response, selector=row)
 
-            address = row.select('td[1]/script/text()').re(r'"(.*?)"')[0].decode('base64')
+            address = row.select('td[1]/script/text()').re(r'"(.*?)"')[0].decode('rot13').decode('base64')
             loader.add_value('address', address)
             loader.add_xpath('port', 'td[2]/text()')
 

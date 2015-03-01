@@ -11,46 +11,20 @@ from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 
 from proxies.items import Proxy, ProxyItemLoader
 
-FORM_DATA = {
-    'ac': 'on',
-    'p': '',
-    'pr[]': ['0', '1', '2'],
-    'a[]': ['0', '1', '2', '3', '4'],
-    'sp[]': ['1', '2', '3'],
-    'ct[]': ['1', '2', '3'],
-    's': '0',
-    'o': '0',
-    'pp': '3'
-}
-
 class HidemyassSpider(CrawlSpider):
     name = 'hidemyass'
-    allowed_domains = ['hidemyass.com']
-    start_url = 'http://hidemyass.com/proxy-list/'
+    allowed_domains = ['proxylist.hidemyass.com']
+    start_urls = ['http://proxylist.hidemyass.com/']
 
-    rules = (
+    rules = [
         Rule(
             SgmlLinkExtractor(
-                restrict_xpaths='//div[@id="pagination"]'
+                restrict_xpaths='//ul[@class="pagination ng-scope"]'
             ),
             callback='parse_page',
             follow=True
-        ),
-    )
-
-    def start_requests(self):
-        yield Request(
-            url=self.start_url,
-            dont_filter=True,
-            callback=self.search
         )
-
-    def search(self, response):
-        yield FormRequest.from_response(
-            response=response,
-            callback=self.parse_page,
-            formdata=FORM_DATA
-        )
+    ]
 
     def get_ip(self, parent):
         soup = BeautifulSoup(parent.extract()[0])
@@ -82,13 +56,10 @@ class HidemyassSpider(CrawlSpider):
     def parse_page(self, response):
         xpath = HtmlXPathSelector(response)
 
-        for row in xpath.select('//table[@id="listtable"]/tr'):
+        for row in xpath.select('//table[@id="listable"]/tbody/tr'):
             loader = ProxyItemLoader(item=Proxy(), response=response, selector=row)
 
             loader.add_value('address', self.get_ip(row.select('td[2]/span')))
             loader.add_xpath('port', 'td[3]/text()')
 
             yield loader.load_item()
-
-        for request in self.parse(response):
-            yield request
